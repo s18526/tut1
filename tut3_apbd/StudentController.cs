@@ -45,7 +45,7 @@ namespace Tutorial3.Controllers
         public IActionResult CreateStudent(Student student)
         {
             student.IndexNumber = $"s{new Random().Next(1, 20000)}";
-            // _dbService.GetStudents().ToList().Add(student);
+          
             return Ok(student);
         }
 
@@ -56,9 +56,7 @@ namespace Tutorial3.Controllers
             {
                 return NotFound("Student Not Found");
             }
-            // updating object 
-            // student.FirstName = "James";
-            // _dbService.GetStudents().ToList().Insert(id, student);
+        
             return Ok("Update completed");
         }
 
@@ -69,8 +67,7 @@ namespace Tutorial3.Controllers
             {
                 return NotFound("Student Not Found");
             }
-            // deleting object 
-            //_dbService.GetStudents().ToList().RemoveAt(id);
+           
             return Ok("Delete completed");
         }
     }
