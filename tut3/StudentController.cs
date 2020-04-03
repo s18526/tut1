@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Tutorial3.DAL;
@@ -22,7 +23,21 @@ namespace Tutorial3.Controllers
         [HttpGet]
         public IActionResult GetStudents(string orderBy)
         {
-            return Ok(_dbService.GetStudents());
+            using (var sqlConnection = new SqlConnection(@"Data Source=db-mssql;Initial Catalog=s18526;Integrated Security=True"))
+            {
+                using (var command = new SqlCommand()) 
+                {
+                    command.Connection = sqlConnection;
+                    command.CommandText = "select s.FirstName, s.LastName, s.BirthDate, st.Name as Studies, e.Semester "+
+                                          "from Student s "+
+                                          "join Enrollment e on e.IdEnrollment = s.IdEnrollment "+
+                                          "join Studies st on st.IdStudy = e.IdStudy;";
+                    sqlConnection.Open();
+                    var response = command.ExecuteReader();
+                }
+            }
+
+            return Ok();
         }
 
         [HttpGet("{id}")]
